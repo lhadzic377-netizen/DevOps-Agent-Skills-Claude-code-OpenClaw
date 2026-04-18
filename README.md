@@ -100,7 +100,7 @@ Then restart: `openclaw gateway restart`
 ## Usage Examples
 
 ```
-You: /architect betting research platform
+You: /architect AI research platform
 AI: [4-Step Vision Loop]
     - Vision Statement + 3 KPIs
     - Conservative/Innovative/Moonshot comparison
