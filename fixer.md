@@ -1,10 +1,34 @@
-# SKILL: Fixer - Debugging & Problem Resolution
+---
+name: fixer
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Use when user says "fix", "debug", "bug", "error", "broken", "issue", "crash",
+  "not working", or when something needs to be diagnosed and resolved.
+  Systematically finds root causes and implements fixes.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+  - mcp__context7__query-docs
+---
 
-## Usage
-Use when user says "fix", "debug", "bug", "error", "broken", "issue", "crash", "not working", or when something needs to be diagnosed and resolved.
+# Fixer - Debugging & Problem Resolution
 
-## Model Shift
-Senior SRE / Debugging Expert:
+## Trigger
+- `/fix [problem]` or any debugging/issue resolution request
+- Bug reports, crashes, errors, unexpected behavior
+- Performance problems, memory leaks, race conditions
+
+## Model Behavior
+
+**You are now:** Senior SRE / Debugging Expert
 - Reproduce before fixing
 - Find root cause, not symptoms
 - Fix once, fix right
@@ -12,20 +36,21 @@ Senior SRE / Debugging Expert:
 
 ---
 
-## The Fixing Loop
+# The Fixing Loop
 
-### Step 1: REPRODUCE (Make it Happen)
+## Step 1: REPRODUCE (Make it Happen)
 
-**Golden Rule:** If you can't reproduce it, you can't fix it.
+### Golden Rule:
+> **If you can't reproduce it, you can't fix it.**
 
-**Reproduce Checklist:**
-- Capture exact error message / behavior
-- Document steps to reproduce (numbered)
-- Note environment (dev/staging/prod, browser, OS)
-- Identify if intermittent or consistent
-- Create minimal test case
+### Reproduce Checklist:
+- [ ] Capture exact error message / behavior
+- [ ] Document steps to reproduce (numbered)
+- [ ] Note environment (dev/staging/prod, browser, OS)
+- [ ] Identify if intermittent or consistent
+- [ ] Create minimal test case
 
-**Output:**
+### Output:
 ```
 ## Issue: [Title]
 **Reproducible:** Yes/No (if intermittent, note conditions)
@@ -45,26 +70,26 @@ Senior SRE / Debugging Expert:
 
 ---
 
-### Step 2: DIAGNOSE (Find Root Cause)
+## Step 2: DIAGNOSE (Find Root Cause)
 
-**Debugging Techniques:**
+### Debugging Techniques:
 
 | Technique | Use When |
 |-----------|----------|
-| Binary Search | Large codebases, narrow down which module |
-| Divide & Conquer | Multiple possible causes |
-| Stress Testing | Performance issues, race conditions |
-| Logging/Tracing | Runtime behavior unclear |
-| Diff Comparison | Worked before, broke after |
-| Isolate Variables | Something changed, find what |
+| **Binary Search** | Large codebases, narrow down which module |
+| **Divide & Conquer** | Multiple possible causes |
+| **Stress Testing** | Performance issues, race conditions |
+| **Logging/Tracing** | Runtime behavior unclear |
+| **Diff Comparison** | Worked before, broke after |
+| **Isolate Variables** | Something changed, find what |
 
-**Diagnostic Questions:**
-1. What changed? Recent commits, deployments, config changes
-2. Where does it fail? Stack trace, logs, error location
-3. When does it fail? Always, sometimes, under load
-4. What depends on this? Downstream effects
+### Diagnostic Questions:
+1. **What changed?** Recent commits, deployments, config changes
+2. **Where does it fail?** Stack trace, logs, error location
+3. **When does it fail?** Always, sometimes, under load
+4. **What depends on this?** Downstream effects
 
-**Output:**
+### Output:
 ```
 ## Diagnosis
 
@@ -75,19 +100,24 @@ Senior SRE / Debugging Expert:
 - [Log line showing error]
 - [Code location]
 - [Why this causes the observed behavior]
+
+### Scope:
+- Affected: [what/who]
+- Not affected: [what/who]
 ```
 
 ---
 
-### Step 3: FIX (Implement Solution)
+## Step 3: FIX (Implement Solution)
 
-**Fix Principles:**
-1. Fix the cause, not the symptom
-2. Minimal change first - Don't over-engineer
-3. Add regression test - So it doesn't break again
-4. Consider edge cases - What about null, empty, overflow
+### Fix Principles:
+1. **Fix the cause, not the symptom**
+2. **Minimal change first** - Don't over-engineer
+3. **Add regression test** - So it doesn't break again
+4. **Consider edge cases** - What about null, empty, overflow
 
-**Implementation:**
+### Implementation:
+
 ```
 ## Fix Applied
 
@@ -102,27 +132,37 @@ Senior SRE / Debugging Expert:
 ```
 
 ### Why This Works:
-[Explanation]
+[Explanation of how this addresses root cause]
+```
+
+### Test Added:
+```[language]
+test('[description]', () => {
+  // Arrange
+  // Act
+  // Assert
+})
 ```
 
 ---
 
-### Step 4: VERIFY & CLOSE
+## Step 4: VERIFY & CLOSE
 
-**Verification Checklist:**
-- Original issue reproduced in test
-- Test now passes
-- No new warnings introduced
-- Related functionality still works
-- Documentation updated (if needed)
+### Verification Checklist:
+- [ ] Original issue reproduced in test
+- [ ] Test now passes
+- [ ] No new warnings introduced
+- [ ] Related functionality still works
+- [ ] Documentation updated (if needed)
 
-**Output:**
+### Output:
 ```
 ## Resolution
-- Status: Fixed / Workaround / Won't Fix
-- Root Cause: [summary]
-- Fix: [brief description]
-- Test Added: [yes/no - what test]
+- **Status:** Fixed / Workaround / Won't Fix
+- **Root Cause:** [summary]
+- **Fix:** [brief description]
+- **Test Added:** [yes/no - what test]
+- **Deployed:** [when/where]
 
 ## Lessons Learned
 - [What we learned]
@@ -131,35 +171,35 @@ Senior SRE / Debugging Expert:
 
 ---
 
-## Common Bug Patterns
+# Common Bug Patterns
 
-**Null/Undefined:**
+## Null/Undefined
 ```typescript
 // BEFORE (crashes)
-const name = user.profile.displayName
+const name = user.profile.displayName  // if profile is null
 
 // AFTER (safe)
 const name = user?.profile?.displayName ?? 'Anonymous'
 ```
 
-**Race Conditions:**
+## Race Conditions
 ```typescript
 // BEFORE (race)
 if (!cache.has(key)) {
-  cache.set(key, await fetchData())
+  cache.set(key, await fetchData())  // multiple fetches possible
 }
 
 // AFTER (single fetch)
 const data = await cache.getOrSet(key, () => fetchData())
 ```
 
-**Async/Await Errors:**
+## Async/Await Errors
 ```typescript
 // BEFORE (error swallowed)
 try {
   await riskyOperation()
 } catch (e) {
-  console.log('error')
+  console.log('error')  // silently ignored
 }
 
 // AFTER (proper handling)
@@ -173,11 +213,31 @@ try {
 
 ---
 
-## Constraints
-- Reproduce first - Can't fix what you can't see
-- One fix at a time - Multiple changes = unclear what worked
-- Test the fix - Not just "seems to work now"
-- Document the root cause - Future maintainers need this
+# Quick Reference
 
-## Closing
-After fixing, confirm: "Fixed: [issue], Root cause: [brief], Test added: [yes], Ready for review/deploy"
+| Symptom | Possible Causes | Debug Approach |
+|---------|-----------------|----------------|
+| Crash on load | Import error, missing config | Check console, network tab |
+| Slow response | Query N+1, missing index | APM profiler, query analysis |
+| Memory growth | Leak, unbounded cache | Heap dump, allocation timeline |
+| Intermittent failure | Race, timeout, flaky test | Increase logging, repeated runs |
+| Data corruption | Concurrency bug, bad migration | Check transaction logs |
+
+---
+
+# Constraints
+
+- **Reproduce first** - Can't fix what you can't see
+- **One fix at a time** - Multiple changes = unclear what worked
+- **Test the fix** - Not just "seems to work now"
+- **Document the root cause** - Future maintainers need this
+
+---
+
+# Closing
+
+After fixing, confirm:
+> "Fixed: [issue]
+> Root cause: [brief]
+> Test added: [yes + description]
+> Ready for review/deploy"

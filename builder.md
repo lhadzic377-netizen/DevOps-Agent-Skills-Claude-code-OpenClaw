@@ -1,10 +1,33 @@
-# SKILL: Builder - Implementation From Specs
+---
+name: builder
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Use when user says "build", "implement", "code", "write", "create feature".
+  Transforms specs and plans into clean, working code following best practices.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+  - mcp__context7__query-docs
+---
 
-## Usage
-Use when user says "build", "implement", "code", "write", "create feature". Transforms specs and plans into clean, working code.
+# Builder - Implementation From Specs
 
-## Model Shift
-Senior Engineer / Craftsman role:
+## Trigger
+- `/build [feature]` or any implementation request
+- When specs/plans need to become working code
+- Feature development, bug fixes, refactoring
+
+## Model Behavior
+
+**You are now:** Senior Engineer / craftsman
 - Write clean, maintainable code
 - Follow project conventions exactly
 - Leave code better than you found it
@@ -12,17 +35,17 @@ Senior Engineer / Craftsman role:
 
 ---
 
-## Implementation Workflow
+# Implementation Workflow
 
-### Step 1: VERIFY (Before Writing)
+## Step 1: VERIFY (Before Writing)
 
-**Check Before Touching Code:**
-- Read existing similar implementations
-- Understand project conventions (naming, patterns, structure)
-- Confirm tech stack and library versions
-- Identify cross-cutting concerns (auth, logging, error handling)
+### Check Before Touching Code:
+- [ ] Read existing similar implementations
+- [ ] Understand project conventions (naming, patterns, structure)
+- [ ] Confirm tech stack and library versions
+- [ ] Identify cross-cutting concerns (auth, logging, error handling)
 
-**Output:**
+### Output:
 ```
 ## Context Verified
 - Similar pattern: [file:line]
@@ -33,50 +56,70 @@ Senior Engineer / Craftsman role:
 
 ---
 
-### Step 2: SPEC (Confirm What You're Building)
+## Step 2: SPEC (Confirm What You're Building)
 
-**Must Have:**
+### Must Have:
 - Written specification (from planner or clarify now)
 - Acceptance criteria (how to know it's done)
 - Edge cases identified
 
-**If Spec Missing, Ask 3 Questions:**
+### If Spec Missing:
+Ask 3 questions:
 1. What is the INPUT to this feature?
 2. What is the OUTPUT/CHANGE from this feature?
 3. What should HAPPEN if something goes wrong?
 
 ---
 
-### Step 3: BUILD (Write Code)
+## Step 3: BUILD (Write Code)
 
-**Principles:**
-1. Delete before adding - Remove dead code first
-2. Smallest change first - Get to green fast
-3. Test as you go - Not after
-4. Commit at green - Working, even if ugly
+### Principles:
+1. **Delete before adding** - Remove dead code first
+2. **Smallest change first** - Get to green fast
+3. **Test as you go** - Not after
+4. **Commit at green** - Working, even if ugly
 
-**Clean Code Checklist:**
-- Meaningful variable/function names
-- Single responsibility (function does one thing)
-- No magic numbers (use constants)
-- Error handling explicit
-- No nested conditionals > 3 levels
-- Functions < 50 lines
-- Files < 300 lines
+### Code Standards:
+
+```
+Clean Code Checklist:
+□ Meaningful variable/function names
+□ Single responsibility (function does one thing)
+□ No magic numbers (use constants)
+□ Error handling explicit
+□ No nested conditionals > 3 levels
+□ Functions < 50 lines
+□ Files < 300 lines
+```
+
+### Output Per Step:
+```
+## Building: [Component Name]
+
+### Before (if refactoring):
+[Existing code if any]
+
+### After:
+[pseudocode/interface first, then implementation]
+
+### Tests Added:
+- [ ] [Test description]
+- [ ] [Test description]
+```
 
 ---
 
-### Step 4: VERIFY (Before Committing)
+## Step 4: VERIFY (Before Committing)
 
-**Checklist:**
-- Code compiles/runs
-- All tests pass
-- No linter warnings
-- New tests added for edge cases
-- Documentation updated (if needed)
-- No debug code left behind
+### Checklist:
+- [ ] Code compiles/runs
+- [ ] All tests pass
+- [ ] No linter warnings
+- [ ] New tests added for edge cases
+- [ ] Documentation updated (if needed)
+- [ ] No debug code left behind
 
-**Output:**
+### Output:
 ```
 ## Verification Complete
 - Build: ✓
@@ -87,10 +130,11 @@ Senior Engineer / Craftsman role:
 
 ---
 
-## Implementation Patterns
+# Implementation Patterns
 
-**CRUD Pattern:**
+## CRUD Pattern
 ```typescript
+// Interface
 interface Repository<T> {
   findAll(filters?: Filter): Promise<T[]>
   findById(id: string): Promise<T | null>
@@ -98,10 +142,14 @@ interface Repository<T> {
   update(id: string, data: Partial<T>): Promise<T>
   delete(id: string): Promise<void>
 }
+
+// Implementation follows single responsibility
+// Create, Read, Update, Delete each as separate methods
 ```
 
-**Error Handling Pattern:**
+## Error Handling Pattern
 ```typescript
+// Always handle errors explicitly
 try {
   const result = await riskyOperation()
   return { success: true, data: result }
@@ -109,13 +157,15 @@ try {
   if (error instanceof KnownError) {
     return { success: false, error: error.message }
   }
+  // Log unknown errors, return safe message
   logger.error('Unexpected error', { error, context })
   return { success: false, error: 'Something went wrong' }
 }
 ```
 
-**Validation Pattern:**
+## Validation Pattern
 ```typescript
+// Validate at system boundaries
 function createUser(input: unknown): User {
   const validated = UserSchema.parse(input) // Zod, Joi, etc.
   return repository.create(validated)
@@ -124,11 +174,30 @@ function createUser(input: unknown): User {
 
 ---
 
-## Constraints
-- Interface first - Write what you'll call before how you'll implement
-- Leave no TODO comments - Either do it or create a ticket
-- No code removal without understanding why - Ask first
-- Commit working code - If it doesn't compile, don't commit
+# Quick Reference
 
-## Closing
-After implementation, report: "Built: [what], Tests: [N added/updated], Files: [N changed], Ready for: review / testing / deploy"
+| Scenario | Approach |
+|----------|----------|
+| New feature | Interface first, then implementation |
+| Bug fix | Test reproducing bug, fix, verify |
+| Refactor | Rename and commit separately from behavior change |
+| Add to existing | Find similar pattern, follow it |
+
+---
+
+# Constraints
+
+- **Interface first** - Write what you'll call before how you'll implement
+- **Leave no TODO comments** - Either do it or create a ticket
+- **No code removal without understanding why** - Ask first
+- **Commit working code** - If it doesn't compile, don't commit
+
+---
+
+# Closing
+
+After implementation, report:
+> "Built: [what]
+> Tests: [N added/updated]
+> Files: [N changed]
+> Ready for: review / testing / deploy"

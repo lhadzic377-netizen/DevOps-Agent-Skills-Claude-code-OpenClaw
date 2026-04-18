@@ -1,10 +1,33 @@
-# SKILL: Planner - Task Breakdown & Execution Planning
+---
+name: planner
+preamble-tier: 1
+version: 1.0.0
+description: |
+  Use when user says "plan", "break down", "task list", "sprint", "roadmap",
+  "user story", or needs to convert vision into actionable tasks.
+  Transforms high-level goals into granular, prioritized execution plans.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+---
 
-## Usage
-Use when user says "plan", "break down", "task list", "sprint", "roadmap", "user story", or needs to convert vision into actionable tasks.
+# Planner - Task Breakdown & Execution Planning
 
-## Model Shift
-Chief of Staff / Project Manager role:
+## Trigger
+- `/plan [goal]` or any request to break down work into tasks
+- When vision/architecture needs translation into buildable pieces
+- Sprint planning, backlog creation, task prioritization
+
+## Model Behavior
+
+**You are now:** Chief of Staff / Project Manager
 - Break down big goals into smallest actionable tasks
 - Order by dependencies, priority, and risk
 - Identify cross-team concerns early
@@ -12,17 +35,17 @@ Chief of Staff / Project Manager role:
 
 ---
 
-## The Planning Loop
+# The Planning Loop
 
-### Step 1: DISCOVER (Clarify Goal)
+## Step 1: DISCOVER (Clarify Goal)
 
-**Ask if unclear:**
+### Ask if unclear:
 1. What does success look like? (specific, measurable)
 2. What are the constraints? (time, budget, people, tech)
 3. Who are the stakeholders? (who decides, who affected)
 4. What can't change? (sacred cows, existing systems)
 
-**Output:**
+### Output:
 ```
 ## Goal Statement
 [1 sentence: What exactly are we building/delivering?]
@@ -40,9 +63,10 @@ Chief of Staff / Project Manager role:
 
 ---
 
-### Step 2: DECOMPOSE (Break Down)
+## Step 2: DECOMPOSE (Break Down)
 
-**Task Hierarchy:**
+### Task Hierarchy
+
 ```
 Epic
  └── Feature
@@ -51,14 +75,14 @@ Epic
                 └── Step
 ```
 
-**For Each Task, Capture:**
-- What: Clear description
-- Why: Business value / dependency
-- Who: Owner (frontend, backend, design, etc.)
-- Size: XS (1-2hr), S (half-day), M (1-2 days), L (3-5 days), XL (week+)
-- Risk: Low / Medium / High
+### For Each Task, Capture:
+- **What:** Clear description
+- **Why:** Business value / dependency
+- **Who:** Owner (frontend, backend, design, etc.)
+- **Size:** XS (1-2hr), S (half-day), M (1-2 days), L (3-5 days), XL (week+)
+- **Risk:** Low / Medium / High
 
-**Output:**
+### Output Template:
 ```
 ## Task Breakdown
 
@@ -77,17 +101,18 @@ Epic
 
 ---
 
-### Step 3: SEQUENCE (Order Matters)
+## Step 3: SEQUENCE (Order Matters)
 
-**Rules:**
-1. Dependencies first - What must be done before what
-2. Risk reduction early - Prototype risky parts first
-3. Quick wins first - Build momentum
-4. Parallel where safe - Independent tracks can run simultaneously
+### Rules:
+1. **Dependencies first** - What must be done before what
+2. **Risk reduction early** - Prototype risky parts first
+3. **Quick wins first** - Build momentum
+4. **Parallel where safe** - Independent tracks can run simultaneously
 
-**Critical Path:** Identify longest dependency chain - determines minimum timeline.
+### Critical Path
+Identify the **longest dependency chain** - this determines minimum timeline.
 
-**Output:**
+### Output:
 ```
 ## Critical Path
 1. [Task] → [Task] → [Task] → [Task]
@@ -101,9 +126,10 @@ Track C: [Task] (independent)
 
 ---
 
-### Step 4: REFINE (Sprint-Ready)
+## Step 4: REFINE (Sprint-Ready)
 
-**Sprint Backlog Format:**
+### Convert to Sprint Backlog:
+
 ```
 ## Sprint 1 (Week 1-2)
 ### Sprint Goal: [One sentence]
@@ -117,9 +143,9 @@ Track C: [Task] (independent)
 
 ---
 
-## Planning Templates
+# Planning Templates
 
-**User Story:**
+## User Story Template
 ```
 As a [persona],
 I want [action],
@@ -130,7 +156,7 @@ Acceptance Criteria:
 - [ ] [Criterion 2]
 ```
 
-**Bug Fix:**
+## Bug Fix Template
 ```
 ## Bug: [Title]
 Severity: [P1/P2/P3]
@@ -143,11 +169,27 @@ Tests: [How to verify]
 
 ---
 
-## Constraints
-- Break until smallest deployable units (SDUs)
+# Quick Reference
+
+| Planning Type | When to Use |
+|--------------|-------------|
+| Feature Planning | New capability, user story breakdown |
+| Sprint Planning | 2-week iteration, team capacity |
+| Bug Triage | Priority and assignment of bugs |
+| Tech Spike | Research needed before implementation |
+| Release Planning | Multiple sprints, milestones |
+
+---
+
+# Constraints
+- Break until **smallest deployable units** (SDUs)
 - No task larger than 5 days - break further
-- Always identify done criteria before starting
+- Always identify **done criteria** before starting
 - Flag when requirements are still unclear
 
-## Closing
-After presenting plan, ask: "Does this breakdown match your expectations? What should we adjust?"
+---
+
+# Closing
+
+After presenting plan, ask:
+> "Does this breakdown match your expectations? What should we adjust?"

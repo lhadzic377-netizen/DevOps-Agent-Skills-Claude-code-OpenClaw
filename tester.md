@@ -1,10 +1,34 @@
-# SKILL: Tester - Test Strategy & Implementation
+---
+name: tester
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Use when user says "test", "TDD", "coverage", "unit test", "integration test",
+  "e2e", or when testing strategy needs to be defined/implemented.
+  Ensures code works correctly and keeps working.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+---
 
-## Usage
-Use when user says "test", "TDD", "coverage", "unit test", "integration test", "e2e", or when testing strategy needs to be defined/implemented.
+# Tester - Test Strategy & Implementation
 
-## Model Shift
-QA Engineer / Test Architect:
+## Trigger
+- `/test [feature]` or any testing request
+- Setting up test infrastructure
+- Writing unit/integration/e2e tests
+- Improving test coverage
+
+## Model Behavior
+
+**You are now:** QA Engineer / Test Architect
 - Test behavior, not implementation
 - Cover happy path AND edge cases
 - Tests must be deterministic
@@ -12,7 +36,9 @@ QA Engineer / Test Architect:
 
 ---
 
-## Test Strategy
+# Test Strategy
+
+## Step 1: DEFINE STRATEGY
 
 ### Test Pyramid:
 
@@ -26,15 +52,15 @@ QA Engineer / Test Architect:
       └─────────┘
 ```
 
-**Test Types:**
+### Test Types:
 
 | Type | Purpose | Speed | Quantity |
 |------|---------|-------|----------|
-| Unit | Test single function/class | < 10ms | Many |
-| Integration | Test component interactions | < 1s | Some |
-| E2E | Test full user flows | Minutes | Few |
+| **Unit** | Test single function/class | < 10ms | Many |
+| **Integration** | Test component interactions | < 1s | Some |
+| **E2E** | Test full user flows | Minutes | Few |
 
-**Output:**
+### Output:
 ```
 ## Test Strategy
 
@@ -45,7 +71,7 @@ QA Engineer / Test Architect:
 - Mock: [external dependencies]
 
 ### Integration Tests (N%)
-- What: [API endpoints, DB operations]
+- What: [API endpoints, DB operations, service interactions]
 - Real: [actual dependencies]
 
 ### E2E Tests (N%)
@@ -55,14 +81,18 @@ QA Engineer / Test Architect:
 
 ---
 
-## Write Tests (TDD Approach)
+## Step 2: WRITE TESTS (TDD Approach)
 
-**Red-Green-Refactor:**
+### Red-Green-Refactor:
+
+```
 1. RED: Write failing test first
 2. GREEN: Write minimal code to pass
 3. REFACTOR: Improve code, keep tests green
+```
 
-**AAA Pattern:**
+### AAA Pattern:
+
 ```typescript
 test('calculates total correctly', () => {
   // Arrange - set up test data
@@ -76,7 +106,7 @@ test('calculates total correctly', () => {
 })
 ```
 
-**Test Naming:** [what it tests]
+### Test Naming: [what it tests]
 
 ```typescript
 // GOOD
@@ -87,24 +117,26 @@ test('falls back to cache when Redis is unavailable')
 // BAD
 test('test1')
 test('handleError')
+test('should work')
 ```
 
 ---
 
-## Cover Edge Cases
+## Step 3: COVER EDGE CASES
 
-**Edge Case Checklist:**
+### Edge Case Checklist:
 
 | Category | Cases to Consider |
 |----------|-------------------|
-| Input | Empty, null, undefined, valid, invalid |
-| Boundaries | Min, max, boundary + 1, boundary - 1 |
-| Types | Wrong type passed |
-| Order | Empty first, single item, many items |
-| State | Already exists, doesn't exist, modified |
-| Errors | Network failure, timeout, permission denied |
+| **Input** | Empty, null, undefined, valid, invalid |
+| **Boundaries** | Min, max, boundary + 1, boundary - 1 |
+| **Types** | Wrong type passed |
+| **Order** | Empty first, single item, many items |
+| **State** | Already exists, doesn't exist, modified |
+| **Errors** | Network failure, timeout, permission denied |
 
-**Example Test Suite:**
+### Example Test Suite:
+
 ```typescript
 describe('createUser', () => {
   test('creates user with valid data', () => { /* ... */ })
@@ -112,19 +144,20 @@ describe('createUser', () => {
   test('throws when email is invalid format', () => { /* ... */ })
   test('throws when email already exists', () => { /* ... */ })
   test('hashes password before storing', () => { /* ... */ })
+  test('normalizes email to lowercase', () => { /* ... */ })
 })
 ```
 
 ---
 
-## Verify & Report
+## Step 4: VERIFY & REPORT
 
-**Run Tests:**
+### Run Tests:
 ```bash
 npm test -- --coverage
 ```
 
-**Coverage Report:**
+### Coverage Report:
 ```
 ## Test Coverage
 
@@ -132,32 +165,42 @@ File              | % Stmts | % Branch | % Funcs | % Lines |
 ------------------|---------|----------|---------|---------|
 src/users.ts      |  100    |   100    |   100   |   100   |
 src/orders.ts     |   85    |    75    |    80   |    85   |
+src/products.ts   |   60    |    50    |    55   |    60   |
 
 OVERALL         |   82    |    78    |    79   |    82   |
 ```
 
-**Checklist:**
-- All tests pass
-- Coverage target met (>80%)
-- No flaky tests (run 3x to verify)
-- CI pipeline green
+### Checklist:
+- [ ] All tests pass
+- [ ] Coverage target met (>80%)
+- [ ] No flaky tests (run 3x to verify)
+- [ ] CI pipeline green
 
 ---
 
-## Test Patterns
+# Test Patterns
 
-**Mocking External Dependencies:**
+## Mocking External Dependencies
+
 ```typescript
+// Mock database
 const mockDb = {
   findById: jest.fn(),
   create: jest.fn(),
 }
 
+// Mock time
 jest.useFakeTimers()
 jest.setSystemTime(new Date('2024-01-01'))
+
+// Mock network
+nock('https://api.example.com')
+  .get('/users/1')
+  .reply(200, { id: 1, name: 'Test' })
 ```
 
-**Async Testing:**
+## Async Testing
+
 ```typescript
 test('resolves with data on success', async () => {
   const result = await fetchUser(1)
@@ -169,13 +212,40 @@ test('rejects with error on failure', async () => {
 })
 ```
 
+## Error Boundaries
+
+```typescript
+test('throws ArgumentError when input is undefined', () => {
+  expect(() => process(undefined)).toThrow(ArgumentError)
+})
+```
+
 ---
 
-## Constraints
-- Test behavior, not implementation - Refactor without breaking tests
-- Deterministic only - No flaky tests
-- Isolate tests - Each test independent
-- Fast feedback - Unit tests < 10ms each
+# Quick Reference
 
-## Closing
-After testing: "Test Coverage: [N]%, Tests Added: [N], Status: Ready / Needs More Tests"
+| Scenario | Test Type | Example |
+|----------|-----------|---------|
+| Pure function | Unit | `add(2, 3) === 5` |
+| API endpoint | Integration | `POST /users → 201 Created` |
+| User signup | E2E | Fill form → email confirmation |
+| DB migration | Integration | Run migration → data intact |
+| Error handling | Unit | Invalid input → specific error |
+
+---
+
+# Constraints
+
+- **Test behavior, not implementation** - Refactor without breaking tests
+- **Deterministic only** - No flaky tests
+- **Isolate tests** - Each test independent
+- **Fast feedback** - Unit tests < 10ms each
+
+---
+
+# Closing
+
+After testing:
+> "**Test Coverage:** [N]%
+> **Tests Added:** [N]
+> **Status:** Ready / Needs More Tests"

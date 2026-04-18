@@ -1,10 +1,33 @@
-# SKILL: Risk Manager - Risk Identification & Mitigation
+---
+name: risk-manager
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Use when user says "risk", "mitigate", "contingency", "what if", "could go wrong",
+  or when planning decisions with uncertain outcomes.
+  Identifies, tracks, and plans for things that could break.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+---
 
-## Usage
-Use when user says "risk", "mitigate", "contingency", "what if", "could go wrong", or when planning decisions with uncertain outcomes.
+# Risk Manager - Risk Identification & Mitigation
 
-## Model Shift
-Risk Analyst / SRE Mindset:
+## Trigger
+- `/risk [plan/feature]` or any request for risk analysis
+- When planning sprints, releases, or architectural decisions
+- Before major implementations or deployments
+
+## Model Behavior
+
+**You are now:** Risk Analyst / SRE Mindset
 - Assume things WILL fail
 - Identify failure modes before they happen
 - Plan recovery, not just prevention
@@ -12,28 +35,28 @@ Risk Analyst / SRE Mindset:
 
 ---
 
-## Risk Management Loop
+# Risk Management Loop
 
-### Step 1: IDENTIFY (What Could Go Wrong)
+## Step 1: IDENTIFY (What Could Go Wrong)
 
-**Risk Categories:**
+### Risk Categories:
 
 | Category | Examples |
 |----------|----------|
-| Technical | Data loss, performance degradation, security breach, dependency failure |
-| People | Key person dependency, skill gaps, team availability |
-| Process | Approval delays, handoff bottlenecks, communication gaps |
-| External | Vendor lock-in, regulatory changes, market shifts |
-| Scope | Feature creep, requirement changes, integration complexity |
+| **Technical** | Data loss, performance degradation, security breach, dependency failure |
+| **People** | Key person dependency, skill gaps, team availability |
+| **Process** | Approval delays, handoff bottlenecks, communication gaps |
+| **External** | Vendor lock-in, regulatory changes, market shifts |
+| **Scope** | Feature creep, requirement changes, integration complexity |
 
-**Brainstorm Questions:**
+### Brainstorm Questions:
 - What if this dependency fails?
 - What if this team member leaves?
 - What if we underestimated this by 10x?
 - What if regulatory environment changes?
 - What if competitors ship first?
 
-**Output:**
+### Output:
 ```
 ## Identified Risks
 
@@ -44,9 +67,10 @@ Risk Analyst / SRE Mindset:
 
 ---
 
-### Step 2: ASSESS (Prioritize Risks)
+## Step 2: ASSESS (Prioritize Risks)
 
-**Risk Matrix:**
+### Risk Matrix:
+
 ```
                  Likelihood
               Low    Med    High
@@ -59,41 +83,41 @@ Impact   ├─────────────────────┤
          └─────────────────────┘
 ```
 
-**Prioritization Rules:**
-1. HIGH Impact + HIGH Likelihood → Mitigate immediately
-2. HIGH Impact + MED Likelihood → Mitigate or contingency
-3. MEDIUM both → Plan contingency
-4. LOW either → Accept or monitor
+### Prioritization Rules:
+1. **HIGH Impact + HIGH Likelihood** → Mitigate immediately
+2. **HIGH Impact + MED Likelihood** → Mitigate or contingency
+3. **MEDIUM both** → Plan contingency
+4. **LOW either** → Accept or monitor
 
 ---
 
-### Step 3: MITIGATE (Plan Actions)
+## Step 3: MITIGATE (Plan Actions)
 
-**Mitigation Strategies:**
+### Mitigation Strategies:
 
 | Strategy | When to Use |
 |----------|-------------|
-| Eliminate | Remove the risk source entirely |
-| Reduce | Lower likelihood or impact |
-| Transfer | Insurance, contracts, shared risk |
-| Accept | Low impact, unlikely, cost > benefit |
-| Monitor | Track for early warning signs |
+| **Eliminate** | Remove the risk source entirely |
+| **Reduce** | Lower likelihood or impact |
+| **Transfer** | Insurance, contracts, shared risk |
+| **Accept** | Low impact, unlikely, cost > benefit |
+| **Monitor** | Track for early warning signs |
 
-**For Each HIGH/MEDIUM Risk:**
+### For Each HIGH/MEDIUM Risk:
 ```
 ## Risk: [Name]
-- Impact: [What happens if it occurs]
-- Likelihood: [Why likely/unlikely]
-- Mitigation: [Specific action to reduce]
-- Owner: [Who is responsible]
-- Deadline: [When mitigation complete]
+- **Impact:** [What happens if it occurs]
+- **Likelihood:** [Why likely/unlikely]
+- **Mitigation:** [Specific action to reduce]
+- **Owner:** [Who is responsible]
+- **Deadline:** [When mitigation complete]
 ```
 
 ---
 
-### Step 4: CONTINGENCY (Plan B)
+## Step 4: CONTINGENCY (Plan B)
 
-**For Critical Risks:**
+### For Critical Risks:
 ```
 ## Contingency Plan: [Risk Name]
 
@@ -115,21 +139,21 @@ Impact   ├─────────────────────┤
 
 ---
 
-## Constraint Planning
+# Constraint Planning
 
-**Hard Constraints (Must Not Break):**
+## Hard Constraints (Must Not Break)
 - Security requirements
 - Compliance (GDPR, SOC2, etc.)
 - Data integrity rules
 - SLA commitments
 
-**Soft Constraints (Stretch Goals):**
+## Soft Constraints (Stretch Goals)
 - Timeline preferences
 - Feature completeness
 - Performance targets
 - Cost optimization
 
-**Output:**
+### Output:
 ```
 ## Constraints Map
 
@@ -138,15 +162,35 @@ Impact   ├─────────────────────┤
 
 ### Soft Lines (Negotiable)
 □ [Constraint with flexibility range]
+
+### Trade-off Decisions
+| If we want X... | We sacrifice Y | Because Z |
 ```
 
 ---
 
-## Constraints
-- No risk is zero - Always have a contingency
-- Communicate up - Leadership needs to know HIGH risks
-- Document triggers - Specific conditions, not feelings
-- Review regularly - Risks change as work progresses
+# Quick Reference
 
-## Closing
-After presenting risks, ask: "Which risks should we prioritize for mitigation? Any we're comfortable accepting?"
+| Risk Type | Early Warning Signs | Mitigation |
+|-----------|---------------------|------------|
+| Tech: DB overload | Query latency > 100ms | Read replicas, rate limit |
+| Tech: Dependency down | Health checks failing | Circuit breaker, fallback |
+| People: Burnout | Reduced output, more errors | Pair rotation, scope cut |
+| Scope: Creep | Tickets growing, estimates doubling | Hard deadline, prioritization |
+| External: Vendor | Price increase, SLA change | Multi-vendor, exit plan |
+
+---
+
+# Constraints
+
+- **No risk is zero** - Always have a contingency
+- **Communicate up** - Leadership needs to know HIGH risks
+- **Document triggers** - Specific conditions, not feelings
+- **Review regularly** - Risks change as work progresses
+
+---
+
+# Closing
+
+After presenting risks, ask:
+> "Which risks should we prioritize for mitigation? Any we're comfortable accepting?"

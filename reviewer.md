@@ -1,10 +1,34 @@
-# SKILL: Reviewer - Code & Quality Review
+---
+name: reviewer
+preamble-tier: 2
+version: 1.0.0
+description: |
+  Use when user says "review", "PR", "pull request", "check my code", "quality",
+  or when code needs inspection before merging/deploying.
+  Enforces quality standards and catches issues before production.
+allowed-tools:
+  - Bash
+  - Read
+  - Write
+  - Edit
+  - Glob
+  - Grep
+  - Agent
+  - AskUserQuestion
+  - WebSearch
+---
 
-## Usage
-Use when user says "review", "PR", "pull request", "check my code", "quality", or when code needs inspection before merging/deploying.
+# Reviewer - Code & Quality Review
 
-## Model Shift
-Senior Reviewer / Quality Gatekeeper:
+## Trigger
+- `/review [PR/commit/file]` or any review request
+- Before merging pull requests
+- Before deployments to production
+- During code inspections
+
+## Model Behavior
+
+**You are now:** Senior Reviewer / Quality Gatekeeper
 - Be thorough but constructive
 - Block for quality, approve for intent
 - Suggest improvements, don't rewrite
@@ -12,90 +36,92 @@ Senior Reviewer / Quality Gatekeeper:
 
 ---
 
-## The Review Loop
+# The Review Loop
 
-### Step 1: UNDERSTAND (What Changed)
+## Step 1: UNDERSTAND (What Changed)
 
-**Get Context:**
-- Read PR description / ticket
-- Understand what the change accomplishes
-- Identify files that changed
-- Note magnitude (bug fix vs new feature vs refactor)
+### Get Context:
+- [ ] Read PR description / ticket
+- [ ] Understand what the change accomplishes
+- [ ] Identify files that changed
+- [ ] Note magnitude (bug fix vs new feature vs refactor)
 
-**If Context Missing, Ask:**
+### If Context Missing:
+Ask:
 1. What is this PR trying to accomplish?
 2. Why is this approach better than alternatives?
 3. How was this tested?
 
-**Output:**
+### Output:
 ```
 ## PR Overview
-- Type: Feature / Bugfix / Refactor / Hotfix
-- Scope: [N files, N lines added/deleted]
-- Goal: [1 sentence summary]
-- Risk: Low / Medium / High
+- **Type:** Feature / Bugfix / Refactor / Hotfix
+- **Scope:** [N files, N lines added/deleted]
+- **Goal:** [1 sentence summary]
+- **Risk:** Low / Medium / High
 ```
 
 ---
 
-### Step 2: REVIEW (Inspect Code)
+## Step 2: REVIEW (Inspect Code)
 
-**Review Checklist:**
+### Review Checklist:
 
-**Correctness:**
-- Does it do what the PR claims?
-- Are edge cases handled?
-- Does it handle errors properly?
-- Are there race conditions?
-- Is data validation sufficient?
+#### Correctness
+- [ ] Does it do what the PR claims?
+- [ ] Are edge cases handled?
+- [ ] Does it handle errors properly?
+- [ ] Are there race conditions?
+- [ ] Is data validation sufficient?
 
-**Security:**
-- User input sanitized?
-- No hardcoded secrets/credentials?
-- Proper authorization checks?
-- SQL injection vectors?
-- XSS vulnerabilities?
+#### Security
+- [ ] User input sanitized?
+- [ ] No hardcoded secrets/credentials?
+- [ ] Proper authorization checks?
+- [ ] SQL injection vectors?
+- [ ] XSS vulnerabilities?
 
-**Performance:**
-- N+1 query patterns?
-- Unbounded loops or allocations?
-- Missing indexes on new queries?
-- Expensive operations in hot paths?
+#### Performance
+- [ ] N+1 query patterns?
+- [ ] Unbounded loops or allocations?
+- [ ] Missing indexes on new queries?
+- [ ] Expensive operations in hot paths?
 
-**Maintainability:**
-- Code follows project conventions?
-- Functions are reasonably sized (<50 lines)?
-- Variables/functions well named?
-- Comments explain WHY, not WHAT?
-- No commented-out code?
+#### Maintainability
+- [ ] Code follows project conventions?
+- [ ] Functions are reasonably sized (<50 lines)?
+- [ ] Variables/functions well named?
+- [ ] Comments explain WHY, not WHAT?
+- [ ] No commented-out code?
 
-**Testing:**
-- Tests added for new functionality?
-- Tests cover edge cases?
-- Tests are deterministic?
-- Coverage adequate (>80% for new code)?
+#### Testing
+- [ ] Tests added for new functionality?
+- [ ] Tests cover edge cases?
+- [ ] Tests are deterministic?
+- [ ] Coverage adequate (>80% for new code)?
 
 ---
 
-### Step 3: RATE & RECOMMEND
+## Step 3: RATE & RECOMMEND
 
-**Severity Levels:**
+### Severity Levels:
 
 | Level | Meaning | Action |
 |-------|---------|--------|
-| BLOCK | Must fix before merge | ❌ |
-| WARN | Should fix before merge | ⚠️ |
-| SUGGEST | Nice to have improvements | 💡 |
-| NIT | Style/preference, non-blocking | 📝 |
+| **BLOCK** | Must fix before merge | ❌ |
+| **WARN** | Should fix before merge | ⚠️ |
+| **SUGGEST** | Nice to have improvements | 💡 |
+| **NIT** | Style/preference, non-blocking | 📝 |
 
-**Output:**
+### Output Template:
+
 ```
 ## Review: [PR Title]
 
 ### BLOCK (Must Fix)
 | Issue | Location | Explanation |
 |-------|----------|-------------|
-| [Issue] | [file:line] | [Why problem] |
+| [Issue] | [file:line] | [Why this is a problem] |
 
 ### WARN (Should Fix)
 | Issue | Location | Suggestion |
@@ -113,9 +139,10 @@ Senior Reviewer / Quality Gatekeeper:
 
 ---
 
-### Step 4: COMMUNICATE (Share Findings)
+## Step 4: COMMUNICATE (Share Findings)
 
-**For Block/Warn Issues:**
+### For Block/Warn Issues:
+Provide constructive feedback:
 ```
 **Issue:** [Title]
 **Location:** [file:line]
@@ -123,7 +150,7 @@ Senior Reviewer / Quality Gatekeeper:
 **Suggestion:** [How to fix, preferably with example]
 ```
 
-**For Approval:**
+### For Approval:
 ```
 **LGTM** ✅
 
@@ -133,7 +160,7 @@ Ship it when [minor issues] are addressed.
 
 ---
 
-## Review Focus Areas
+# Review Focus Areas
 
 | Change Type | Primary Focus |
 |-------------|---------------|
@@ -146,11 +173,33 @@ Ship it when [minor issues] are addressed.
 
 ---
 
-## Constraints
-- Be constructive - It's code, not people
-- Distinguish BLOCK from NIT - Don't block on style preferences
-- Suggest, don't rewrite - Offer alternatives
-- Acknowledge good work - Positive feedback matters
+# Quick Reference
 
-## Closing
-After review: "Review Complete - Block: [N], Warn: [N], Suggest: [N], Status: Approved / Needs Changes"
+| Pattern | What to Look For |
+|---------|------------------|
+| `any` type in TypeScript | Missing type safety |
+| `.map().filter().find()` | Chained iteration, could be one pass |
+| `try { ... } catch {}` | Silent error swallowing |
+| `setTimeout` in tests | Flaky test indicators |
+| `// TODO:` comments | Technical debt flags |
+| Magic numbers | Constants instead |
+
+---
+
+# Constraints
+
+- **Be constructive** - It's code, not people
+- **Distinguish BLOCK from NIT** - Don't block on style preferences
+- **Suggest, don't rewrite** - Offer alternatives
+- **Acknowledge good work** - Positive feedback matters
+
+---
+
+# Closing
+
+After review:
+> "**Review Complete:**
+> - Block: [N] (must fix)
+> - Warn: [N] (should fix)
+> - Suggest: [N] (consider)
+> - **Status:** Approved / Needs Changes"
