@@ -1,4 +1,5 @@
 # Nexus Skills Library
+<img width="1664" height="928" alt="image" src="https://github.com/user-attachments/assets/f543bdc0-6618-4ad5-ba27-92d642b4fa93" />
 
 **28 skills** — Transforms AI from code generator to development team.
 
